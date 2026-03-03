@@ -12,23 +12,51 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Tambahan CSS untuk memastikan animasi berjalan lancar & mencegah blank -->
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .font-display {
+            font-family: 'DM Serif Display', serif;
+        }
+        
+        /* Fallback Animasi agar tidak Blank */
+        .reveal, .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+        
+        /* Class active ditambahkan oleh JavaScript saat elemen masuk layar */
+        .reveal.active, .animate-on-scroll.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile menu transition */
+        #mobileMenu {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
 </head>
 
 <body>
     <!-- Modal Overlay -->
-    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-overlay" id="modalOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:40;"></div>
 
     <!-- About Modal -->
-    <div class="modal-content" id="aboutModal">
-        <button class="modal-close" onclick="closeModal('aboutModal')" aria-label="Close modal">
+    <div class="modal-content hidden-modal" id="aboutModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; z-index:50; border-radius:1rem; max-width:32rem; width:90%; max-height:90vh; overflow-y:auto;">
+        <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeModal('aboutModal')" aria-label="Close modal">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </button>
-        <div class="p-8">
-            <div
-                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mb-6">
+        <div class="p-6 sm:p-8">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mb-6">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="16" x2="12" y2="12"></line>
@@ -44,7 +72,7 @@
                     that in the age of AI, intelligence alone is not enough—children need sharp logic to analyze and
                     gentle adab (ethics) to lead.
                 </p>
-                <p class="indo-text">
+                <p class="indo-text font-medium text-sm">
                     JuniorBase adalah Logic Arena pertama di dunia yang dirancang khusus untuk anak usia 9-15 tahun.
                     Kami percaya bahwa di era AI, kecerdasan saja tidak cukup—anak-anak membutuhkan logika yang tajam
                     untuk menganalisis dan adab yang lembut untuk memimpin.
@@ -55,7 +83,7 @@
                     and active critical thinking, JuniorBase creates a safe, structured environment where children learn
                     to think clearly and speak with dignity.
                 </p>
-                <p class="indo-text">
+                <p class="indo-text font-medium text-sm">
                     Didirikan oleh para pendidik dan teknolog yang melihat kesenjangan yang semakin melebar antara
                     konsumsi konten pasif dan pemikiran kritis aktif, JuniorBase menciptakan lingkungan yang aman dan
                     terstruktur di mana anak-anak belajar berpikir jernih dan berbicara dengan santun.
@@ -65,7 +93,7 @@
                     <p class="font-medium text-gray-900">Our Mission</p>
                     <p class="mt-2">To build the next generation of ethical leaders who can navigate the complexities of
                         an AI-driven world with wisdom and integrity.</p>
-                    <p class="indo-text">Membangun generasi penerus pemimpin beretika yang dapat menavigasi kompleksitas
+                    <p class="indo-text font-medium text-sm mt-1">Membangun generasi penerus pemimpin beretika yang dapat menavigasi kompleksitas
                         dunia yang didorong AI dengan kebijaksanaan dan integritas.</p>
                 </div>
             </div>
@@ -73,16 +101,15 @@
     </div>
 
     <!-- Contact Modal -->
-    <div class="modal-content" id="contactModal">
-        <button class="modal-close" onclick="closeModal('contactModal')" aria-label="Close modal">
+    <div class="modal-content hidden-modal" id="contactModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; z-index:50; border-radius:1rem; max-width:32rem; width:90%; max-height:90vh; overflow-y:auto;">
+        <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeModal('contactModal')" aria-label="Close modal">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </button>
-        <div class="p-8">
-            <div
-                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mb-6">
+        <div class="p-6 sm:p-8">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mb-6">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0 1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
@@ -96,7 +123,7 @@
                     We'd love to hear from you! Whether you have questions about our program, want to partner with us,
                     or simply want to learn more about JuniorBase, our team is ready to help.
                 </p>
-                <p class="indo-text">
+                <p class="indo-text font-medium text-sm">
                     Kami ingin mendengar dari Anda! Baik Anda memiliki pertanyaan tentang program kami, ingin bermitra
                     dengan kami, atau sekadar ingin mengetahui lebih lanjut tentang JuniorBase, tim kami siap membantu.
                 </p>
@@ -104,11 +131,8 @@
                 <div class="bg-gray-50 rounded-xl p-6 space-y-4">
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b21a8"
-                                stroke-width="2">
-                                <path
-                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
-                                </path>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b21a8" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                             </svg>
                         </div>
                         <div>
@@ -119,10 +143,8 @@
 
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b21a8"
-                                stroke-width="2">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0 1.1.9-2 2-2z">
-                                </path>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b21a8" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0 1.1.9-2 2-2z"></path>
                                 <polyline points="22,6 12,13 2,6"></polyline>
                             </svg>
                         </div>
@@ -131,28 +153,13 @@
                             <p class="text-sm">hello@juniorbase.id</p>
                         </div>
                     </div>
-
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b21a8"
-                                stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="font-medium text-gray-900">Response Time</p>
-                            <p class="text-sm">Within 24 hours</p>
-                        </div>
-                    </div>
                 </div>
 
                 <a href="https://wa.me/6281234567890?text=Hello%20JuniorBase%2C%20I%20would%20like%20to%20know%20more%20about%20your%20program."
-                    target="_blank" class="btn-primary btn-whatsapp w-full text-center mt-4">
+                    target="_blank" class="bg-green-500 hover:bg-green-600 text-white rounded-lg px-4 py-3 w-full text-center mt-4 block transition-colors">
                     <span class="flex items-center justify-center gap-2">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                         </svg>
                         Chat with us on WhatsApp
                     </span>
@@ -162,16 +169,15 @@
     </div>
 
     <!-- Privacy Modal -->
-    <div class="modal-content" id="privacyModal">
-        <button class="modal-close" onclick="closeModal('privacyModal')" aria-label="Close modal">
+    <div class="modal-content hidden-modal" id="privacyModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; z-index:50; border-radius:1rem; max-width:32rem; width:90%; max-height:90vh; overflow-y:auto;">
+        <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeModal('privacyModal')" aria-label="Close modal">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </button>
-        <div class="p-8">
-            <div
-                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mb-6">
+        <div class="p-6 sm:p-8">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mb-6">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 </svg>
@@ -185,7 +191,7 @@
                     <p>When you join our waiting list or use our services, we collect information you provide directly
                         to us, including name, email address, phone number, and information about your children (age
                         range, learning interests).</p>
-                    <p class="indo-text">Ketika Anda bergabung dengan daftar tunggu atau menggunakan layanan kami, kami
+                    <p class="indo-text font-medium mt-1">Ketika Anda bergabung dengan daftar tunggu atau menggunakan layanan kami, kami
                         mengumpulkan informasi yang Anda berikan langsung kepada kami, termasuk nama, alamat email,
                         nomor telepon, dan informasi tentang anak-anak Anda (rentang usia, minat belajar).</p>
                 </div>
@@ -194,7 +200,7 @@
                     <h3 class="font-semibold text-gray-900 mb-2">2. How We Use Your Information</h3>
                     <p>We use the information we collect to provide, maintain, and improve our services, to communicate
                         with you about products, services, and events, and to measure and analyze usage patterns.</p>
-                    <p class="indo-text">Kami menggunakan informasi yang kami kumpulkan untuk menyediakan, memelihara,
+                    <p class="indo-text font-medium mt-1">Kami menggunakan informasi yang kami kumpulkan untuk menyediakan, memelihara,
                         dan meningkatkan layanan kami, untuk berkomunikasi dengan Anda tentang produk, layanan, dan
                         acara, serta untuk mengukur dan menganalisis pola penggunaan.</p>
                 </div>
@@ -204,7 +210,7 @@
                     <p>We implement appropriate technical and organizational measures to protect the personal data of
                         children and parents. All data is encrypted and stored securely. We never sell your personal
                         information to third parties.</p>
-                    <p class="indo-text">Kami menerapkan langkah-langkah teknis dan organisasi yang tepat untuk
+                    <p class="indo-text font-medium mt-1">Kami menerapkan langkah-langkah teknis dan organisasi yang tepat untuk
                         melindungi data pribadi anak-anak dan orang tua. Semua data dienkripsi dan disimpan dengan aman.
                         Kami tidak pernah menjual informasi pribadi Anda kepada pihak ketiga.</p>
                 </div>
@@ -214,7 +220,7 @@
                     <p>JuniorBase is designed for children aged 9-15. We comply with all applicable children's privacy
                         laws. Parents have full control over their children's data and can request deletion at any time.
                     </p>
-                    <p class="indo-text">JuniorBase dirancang untuk anak-anak berusia 9-15 tahun. Kami mematuhi semua
+                    <p class="indo-text font-medium mt-1">JuniorBase dirancang untuk anak-anak berusia 9-15 tahun. Kami mematuhi semua
                         undang-undang privasi anak yang berlaku. Orang tua memiliki kendali penuh atas data anak-anak
                         mereka dan dapat meminta penghapusan kapan saja.</p>
                 </div>
@@ -222,7 +228,7 @@
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-2">5. Contact Us</h3>
                     <p>If you have questions about this Privacy Policy, please contact us at privacy@juniorbase.id</p>
-                    <p class="indo-text">Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi
+                    <p class="indo-text font-medium mt-1">Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi
                         kami di privacy@juniorbase.id</p>
                 </div>
 
@@ -234,22 +240,22 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-gray-100">
+    <nav class="fixed top-0 left-0 right-0 z-40 border-b border-gray-100 bg-white/90 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 sm:h-20">
-                <a href="#" class="logo-text">JuniorBase</a>
+                <a href="#" class="font-display text-2xl font-bold text-gray-900">JuniorBase</a>
 
                 <div class="desktop-nav hidden md:flex items-center gap-8">
-                    <a href="#method" class="text-gray-600 hover:text-gray-900 transition-colors font-medium">Method</a>
-                    <a href="#video" class="text-gray-600 hover:text-gray-900 transition-colors font-medium">Video</a>
-                    <a href="#pricing"
-                        class="text-gray-600 hover:text-gray-900 transition-colors font-medium">Pricing</a>
+                    <a href="#method" class="text-gray-600 hover:text-purple-700 transition-colors font-medium">Method</a>
+                    <a href="#video" class="text-gray-600 hover:text-purple-700 transition-colors font-medium">Video</a>
+                    <a href="#pricing" class="text-gray-600 hover:text-purple-700 transition-colors font-medium">Pricing</a>
                     <a href="https://wa.me/6281234567890?text=Hello%20JuniorBase%2C%20I%20would%20like%20to%20know%20more%20about%20your%20program."
-                        target="_blank" class="btn-primary text-sm"><span>Contact
-                            Us</span></a>
+                        target="_blank" class="bg-gray-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
+                        <span>Contact Us</span>
+                    </a>
                 </div>
 
-                <button class="mobile-menu p-2" aria-label="Open menu">
+                <button id="menuToggleButton" class="mobile-menu p-2 md:hidden text-gray-900 focus:outline-none" aria-label="Open menu">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="3" y1="6" x2="21" y2="6"></line>
                         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -258,19 +264,29 @@
                 </button>
             </div>
         </div>
+        
+        <!-- Mobile Dropdown Menu (Hidden by default) -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="flex flex-col px-4 pt-2 pb-6 space-y-3">
+                <a href="#method" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-700 hover:bg-purple-50">Method</a>
+                <a href="#video" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-700 hover:bg-purple-50">Video</a>
+                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-700 hover:bg-purple-50">Pricing</a>
+                <a href="https://wa.me/6281234567890?text=Hello%20JuniorBase%2C%20I%20would%20like%20to%20know%20more%20about%20your%20program."
+                    target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-purple-600 hover:bg-purple-700 text-center mt-2">
+                    Contact Us
+                </a>
+            </div>
+        </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-bg grid-pattern pt-24 sm:pt-32 pb-16 sm:pb-24 min-h-screen flex items-center">
+    <section class="hero-bg grid-pattern pt-24 sm:pt-32 pb-16 sm:pb-24 min-h-screen flex items-center bg-purple-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 <div class="animate-on-scroll">
-                    <span class="badge mb-6">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-sm font-medium mb-6">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                         </svg>
                         First Logic Arena for Children
                     </span>
@@ -278,7 +294,7 @@
                     <h1 class="font-display text-3xl sm:text-5xl lg:text-5xl text-gray-900 leading-tight mb-4">
                         Intelligence is Common. Logic is Rare. Adab is the Future.
                     </h1>
-                    <p class="indo-text text-lg sm:text-xl mb-4">
+                    <p class="indo-text text-lg sm:text-xl mb-4 text-purple-700 font-medium">
                         Karena Pintar Saja Tidak Pernah Cukup.
                     </p>
 
@@ -286,28 +302,31 @@
                         The world's first Logic Arena for children (9-15) to master critical thinking and ethical
                         leadership in the age of AI.
                     </p>
-                    <p class="indo-text mb-8">
+                    <p class="indo-text text-gray-600 mb-8 text-sm">
                         Di era Al, anak-anak kita butuh ketajaman logika untuk menganalisa, dan kelembutan adab untuk
                         memimpin. Selamat datang di JuniorBase.
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#pricing" class="btn-primary text-base"><span>Join the Tier 1 Waiting List - 99k
-                                IDR</span></a>
-                        <button class="btn-secondary text-base">Learn More</button>
+                        <a href="#pricing" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-full font-medium text-center transition-colors">
+                            <span>Join the Tier 1 Waiting List - 99k IDR</span>
+                        </a>
+                        <button onclick="openModal('aboutModal')" class="bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 px-6 py-3 rounded-full font-medium text-center transition-colors">
+                            Learn More
+                        </button>
                     </div>
 
-                    <div class="flex items-center gap-6 mt-10 pt-8 border-t border-gray-200">
+                    <div class="flex items-center gap-6 mt-10 pt-8 border-t border-purple-200">
                         <div>
                             <div class="text-2xl font-bold text-gray-900">200</div>
                             <div class="text-sm text-gray-500">Families Limit</div>
                         </div>
-                        <div class="w-px h-10 bg-gray-200"></div>
+                        <div class="w-px h-10 bg-purple-200"></div>
                         <div>
                             <div class="text-2xl font-bold text-gray-900">9-15</div>
                             <div class="text-sm text-gray-500">Age Range</div>
                         </div>
-                        <div class="w-px h-10 bg-gray-200"></div>
+                        <div class="w-px h-10 bg-purple-200"></div>
                         <div>
                             <div class="text-2xl font-bold text-gray-900">Founding</div>
                             <div class="text-sm text-gray-500">Member Price</div>
@@ -315,17 +334,16 @@
                     </div>
                 </div>
 
-                <div class="animate-on-scroll" style="animation-delay: 0.2s;">
-                    <div class="hero-image-frame">
-                        <img src="img/10.jpg" alt="Children actively learning and raising hands in classroom"
-                            loading="lazy">
-                        <div class="image-overlay"></div>
+                <div class="animate-on-scroll relative" style="transition-delay: 0.2s;">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative">
+                        <img src="img/10.jpg" alt="Children actively learning and raising hands in classroom" class="w-full h-auto object-cover" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                     </div>
 
                     <div class="flex justify-center gap-2 mt-6">
-                        <div class="slider-dot active" data-slide="0"></div>
-                        <div class="slider-dot" data-slide="1"></div>
-                        <div class="slider-dot" data-slide="2"></div>
+                        <div class="w-3 h-3 rounded-full bg-purple-600"></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-300"></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-300"></div>
                     </div>
                 </div>
             </div>
@@ -333,25 +351,25 @@
     </section>
 
     <!-- Problem Section -->
-    <section class="py-20 sm:py-28 bg-gray-50">
+    <section class="py-20 sm:py-28 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-3xl mx-auto text-center mb-16 reveal">
-                <span class="badge mb-6">The Problem</span>
+                <span class="inline-block px-3 py-1 rounded-full bg-red-100 text-red-800 text-sm font-medium mb-6">The Problem</span>
                 <h2 class="font-display text-3xl sm:text-4xl lg:text-4xl text-gray-900 mb-4">
                     The Passive Consumption Trap
                 </h2>
-                <p class="indo-text text-xl mb-6">
+                <p class="indo-text text-xl mb-6 text-gray-600">
                     Mengambil Kembali Kendali Masa Depan Mereka.
                 </p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 reveal">
-                <div class="feature-card">
-                    <div class="problem-image-container mb-6 h-48">
-                        <img src="img/09.png" alt="Child focusing deeply on learning and studying" loading="lazy">
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-shadow">
+                    <div class="mb-6 h-48 rounded-xl overflow-hidden bg-gray-200">
+                        <img src="img/09.png" alt="Child focusing deeply on learning and studying" class="w-full h-full object-cover" loading="lazy">
                     </div>
-                    <div class="feature-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b21a8" stroke-width="2">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm mb-6 text-purple-600">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"></circle>
                             <line x1="12" y1="8" x2="12" y2="12"></line>
                             <line x1="12" y1="16" x2="12.01" y2="16"></line>
@@ -362,19 +380,19 @@
                         Today's children are overwhelmed by algorithms that reward speed over depth. We are witnessing a
                         decline in focus, analytical thinking, and the ability to disagree while maintaining dignity.
                     </p>
-                    <p class="indo-text">
+                    <p class="indo-text text-gray-500 text-sm">
                         Sulit dipungkiri, ada rasa sesak melihat anak-anak kita terjebak dalam paparan konten yang
                         dangkal dan hilangnya kemampuan fokus. Kita melihat mereka mulai terpengaruh budaya digital yang
                         kurang sopan.
                     </p>
                 </div>
 
-                <div class="feature-card">
-                    <div class="problem-image-container mb-6 h-48">
-                        <img src="img/12.png" alt="Children collaborating and learning together happily" loading="lazy">
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-shadow">
+                    <div class="mb-6 h-48 rounded-xl overflow-hidden bg-gray-200">
+                        <img src="img/12.png" alt="Children collaborating and learning together happily" class="w-full h-full object-cover" loading="lazy">
                     </div>
-                    <div class="feature-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b21a8" stroke-width="2">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm mb-6 text-purple-600">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                         </svg>
                     </div>
@@ -383,7 +401,7 @@
                         JuniorBase was built to reclaim that focus. We move children from being passive "users" of
                         technology to becoming independent architects of thought.
                     </p>
-                    <p class="indo-text">
+                    <p class="indo-text text-gray-500 text-sm">
                         JuniorBase hadir untuk memutus siklus ini. Melatih mereka menjadi pribadi mandiri yang mampu
                         berpikir jernih dan bicara santun di tengah ekosistem digital yang semakin tidak teratur.
                     </p>
@@ -393,55 +411,54 @@
     </section>
 
     <!-- Video Section -->
-    <section id="video" class="py-20 sm:py-28 bg-white">
+    <section id="video" class="py-20 sm:py-28 bg-gray-900 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 reveal">
-                <span class="badge mb-6">Our Vision</span>
-                <h2 class="font-display text-3xl sm:text-4xl lg:text-4xl text-gray-900 mb-4">
+                <span class="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-sm font-medium mb-6">Our Vision</span>
+                <h2 class="font-display text-3xl sm:text-4xl lg:text-4xl mb-4">
                     See How JuniorBase Works
                 </h2>
-                <p class="indo-text text-xl mb-4">
+                <p class="indo-text text-xl mb-4 text-gray-300">
                     Lihat Bagaimana JuniorBase Bekerja
                 </p>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto mb-2">
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-2">
                     Watch our vision for the future of education and how we're building the next generation of ethical
                     leaders.
                 </p>
-                <p class="indo-text max-w-2xl mx-auto">
+                <p class="indo-text text-gray-500 text-sm max-w-2xl mx-auto">
                     Saksikan visi kami untuk masa depan pendidikan dan bagaimana kami membangun generasi penerus
                     pemimpin beretika.
                 </p>
             </div>
 
-            <div class="reveal">
-                <div class="video-container">
-                    <div class="video-wrapper">
-                        <video controls playsinline>
-                            <source src="img/video-intro.mp4" type="video/mp4">
-                            Browser Anda tidak mendukung pemutar video.
-                        </video>
-                    </div>
-                    <div class="video-frame-overlay"></div>
+            <div class="reveal max-w-4xl mx-auto">
+                <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-800 bg-black aspect-video flex items-center justify-center">
+                    <video controls playsinline class="w-full h-full object-cover">
+                        <source src="img/0225.mp4" type="video/mp4">
+                        Browser Anda tidak mendukung pemutar video.
+                    </video>
+                    <!-- Placeholder teks untuk visual jika file tidak ada -->
+                    <div class="absolute text-gray-600 pointer-events-none">Video Area</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Method Section -->
-    <section id="method" class="py-20 sm:py-28 bg-gray-50">
+    <section id="method" class="py-20 sm:py-28 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <span class="badge mb-6">The Method</span>
+                <span class="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-6">The Method</span>
                 <h2 class="font-display text-3xl sm:text-4xl lg:text-4xl text-gray-900 mb-4">
                     How We Build Future Leaders
                 </h2>
-                <p class="indo-text text-xl mb-4">
+                <p class="indo-text text-xl mb-4 text-gray-600">
                     Bagaimana Kami Membangun Pemimpin Masa Depan
                 </p>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto mb-2">
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto mb-2">
                     A comprehensive approach combining logic training, ethical guidance, and measurable growth.
                 </p>
-                <p class="indo-text max-w-2xl mx-auto">
+                <p class="indo-text text-gray-400 text-sm max-w-2xl mx-auto">
                     Pendekatan komprehensif yang menggabungkan pelatihan logika, bimbingan etis, dan pertumbuhan yang
                     terukur.
                 </p>
@@ -449,11 +466,10 @@
 
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Card 1: Tribes -->
-                <div class="feature-card stagger-child">
-                    <img src="img/15.png"
-                        alt="Children in group study discussion" class="method-card-image" loading="lazy">
-                    <div class="feature-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b21a8" stroke-width="2">
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:-translate-y-1 transition-transform reveal" style="transition-delay: 0.1s;">
+                    <img src="img/15.png" alt="Children in group study discussion" class="w-full h-40 object-cover rounded-xl mb-6 bg-gray-200" loading="lazy">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm mb-4 text-purple-600">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                             <circle cx="9" cy="7" r="4"></circle>
                             <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -461,58 +477,56 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">The Tribes</h3>
-                    <p class="text-sm text-gray-500 mb-3 font-medium">Lingkungan sehat untuk mengasah logika</p>
-                    <p class="text-gray-600 mb-2">
+                    <p class="text-sm text-purple-600 mb-3 font-medium">Lingkungan sehat untuk mengasah logika</p>
+                    <p class="text-gray-600 mb-2 text-sm">
                         A high-trust peer environment where children engage in structured logic challenges. They learn
                         that disagreement is a tool for growth when handled with sharp logic and unshakable respect.
                     </p>
-                    <p class="indo-text">
+                    <p class="indo-text text-gray-500 text-xs">
                         Kami mengajarkan bahwa berbeda pendapat itu wajar, asalkan tetap menggunakan akal sehat dan
                         tutur kata yang terjaga.
                     </p>
                 </div>
 
                 <!-- Card 2: AI Ethics -->
-                <div class="feature-card stagger-child">
-                    <img src="img/13.png"
-                        alt="Child learning with AI technology and tablet" class="method-card-image" loading="lazy">
-                    <div class="feature-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b21a8" stroke-width="2">
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:-translate-y-1 transition-transform reveal" style="transition-delay: 0.2s;">
+                    <img src="img/13.png" alt="Child learning with AI technology and tablet" class="w-full h-40 object-cover rounded-xl mb-6 bg-gray-200" loading="lazy">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm mb-4 text-purple-600">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
                             <line x1="8" y1="21" x2="16" y2="21"></line>
                             <line x1="12" y1="17" x2="12" y2="21"></line>
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">AI Ethics-Referee</h3>
-                    <p class="text-sm text-gray-500 mb-3 font-medium">Pendamping digital yang memastikan etika</p>
-                    <p class="text-gray-600 mb-2">
+                    <p class="text-sm text-purple-600 mb-3 font-medium">Pendamping digital yang memastikan etika</p>
+                    <p class="text-gray-600 mb-2 text-sm">
                         Our proprietary technology moderates every exchange in real-time, rewarding logical validity and
                         ethical conduct while ensuring a bullying-free arena.
                     </p>
-                    <p class="indo-text">
+                    <p class="indo-text text-gray-500 text-xs">
                         Pendamping digital yang memastikan setiap diskusi tetap beretika, saling menghargai, dan bebas
                         dari perundungan (bullying).
                     </p>
                 </div>
 
                 <!-- Card 3: Growth -->
-                <div class="feature-card stagger-child">
-                    <img src="img/14.png"
-                        alt="Child writing and learning successfully" class="method-card-image" loading="lazy">
-                    <div class="feature-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b21a8" stroke-width="2">
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:-translate-y-1 transition-transform reveal" style="transition-delay: 0.3s;">
+                    <img src="img/14.png" alt="Child writing and learning successfully" class="w-full h-40 object-cover rounded-xl mb-6 bg-gray-200" loading="lazy">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm mb-4 text-purple-600">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="18" y1="20" x2="18" y2="10"></line>
                             <line x1="12" y1="20" x2="12" y2="4"></line>
                             <line x1="6" y1="20" x2="6" y2="14"></line>
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">Concrete Progress</h3>
-                    <p class="text-sm text-gray-500 mb-3 font-medium">Bukan sekadar nilai di atas kertas</p>
-                    <p class="text-gray-600 mb-2">
+                    <p class="text-sm text-purple-600 mb-3 font-medium">Bukan sekadar nilai di atas kertas</p>
+                    <p class="text-gray-600 mb-2 text-sm">
                         We don't provide grades, we provide a Cognitive Growth Map. Watch your child's ability to
                         analyze and lead mature in real-time.
                     </p>
-                    <p class="indo-text">
+                    <p class="indo-text text-gray-500 text-xs">
                         Ayah Bunda akan melihat nyata bagaimana kedewasaan berpikir anak bertumbuh setiap harinya.
                     </p>
                 </div>
@@ -521,397 +535,225 @@
     </section>
 
     <!-- Pricing Section -->
-    <section id="pricing" class="py-20 sm:py-28 bg-white">
+    <section id="pricing" class="py-20 sm:py-28 bg-purple-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="reveal">
-                    <span class="badge mb-6">Founder's Commitment</span>
+                    <span class="inline-block px-3 py-1 rounded-full bg-purple-200 text-purple-800 text-sm font-medium mb-6">Founder's Commitment</span>
                     <h2 class="font-display text-3xl sm:text-4xl lg:text-4xl text-gray-900 mb-4">
                         Building the Foundation of 2040
                     </h2>
-                    <p class="indo-text text-xl mb-6">
+                    <p class="indo-text text-xl mb-6 text-purple-700 font-medium">
                         Mari Membangun Pondasi Ini Bersama.
                     </p>
-                    <p class="text-gray-600 text-lg leading-relaxed mb-2">
+                    <p class="text-gray-600 text-lg leading-relaxed mb-4">
                         JuniorBase is more than an educational tool, it is a movement. By joining our paid waiting list,
                         you are securing a Founding Member Price Lock and priority access (limited to the first 200
                         families). This commitment allows us to build a future where our children lead with both clarity
                         and character.
                     </p>
-                    <p class="indo-text mb-8">
+                    <p class="indo-text mb-8 text-gray-600">
                         Bergabung di daftar tunggu (99rb) adalah bentuk komitmen Ayah Bunda untuk masa depan anak-anak
-                        kita. Amankan kursi prioritas (Hanya 200 keluarga) dan dapatkan hak istimewa Harga Member
-                        Perdana selama keanggotaan aktif.
+                        kita. Amankan kursi prioritas (Hanya 200 keluarga) dan dapatkan harga khusus Founding Member.
                     </p>
-
-                    <div class="space-y-4">
-                        <div class="checklist-item">
-                            <div class="checklist-icon">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white"
-                                    stroke-width="3">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </div>
-                            <div>
-                                <div class="font-medium text-gray-900">Priority Access</div>
-                                <div class="text-sm text-gray-500">Secure your spot among the first 200 families</div>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-icon">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white"
-                                    stroke-width="3">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </div>
-                            <div>
-                                <div class="font-medium text-gray-900">Founding Member Price Lock</div>
-                                <div class="text-sm text-gray-500">Locked founding member pricing for active membership
-                                </div>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-icon">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white"
-                                    stroke-width="3">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </div>
-                            <div>
-                                <div class="font-medium text-gray-900">Shape the Future</div>
-                                <div class="text-sm text-gray-500">Be part of building the next generation of leaders
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="reveal" style="animation-delay: 0.2s;">
-                    <div class="price-card text-center">
-                        <div class="relative z-10">
-                            <span class="inline-block px-4 py-1 bg-white/20 rounded-full text-sm font-medium mb-6">
-                                Waiting List Deposit
-                            </span>
-                            <div class="text-6xl font-bold mb-2">99K</div>
-                            <div class="text-white/70 mb-8">IDR (Fully Refundable)</div>
-
-                            <!--<div class="bg-white/10 rounded-xl p-6 mb-8">-->
-                            <!--    <div class="text-sm text-white/70 mb-2">Founding Member Price</div>-->
-                            <!--    <div class="text-3xl font-bold">Rp 149.000</div>-->
-                            <!--    <div class="text-sm text-white/70">/month (locked for founding members)</div>-->
-                            <!--</div>-->
-
-                            <ul class="text-left space-y-3 mb-8">
-                                <li class="flex items-center gap-3">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    <span>Priority queue for first 200 families</span>
-                                </li>
-                                <li class="flex items-center gap-3">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    <span>Locked founding member pricing</span>
-                                </li>
-                                <li class="flex items-center gap-3">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    <span>Early access to new features</span>
-                                </li>
-                                <li class="flex items-center gap-3">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    <span>Direct founder communication</span>
-                                </li>
-                            </ul>
-
-                            <a href="https://juniorbase.myr.id/plink/junior-base"
-                                class="w-full bg-white text-purple-700 font-bold py-4 px-6 rounded-xl hover:bg-gray-100 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-                                Secure Your Priority Spot
-                            </a>
-                            <p class="text-sm text-white/60 mt-4">
-                                Joining the waiting list is your commitment to our children's future.
-                            </p>
-                            <p class="text-sm text-white/40 mt-1 italic">
-                                Bergabung di daftar tunggu adalah bentuk komitmen Ayah Bunda untuk masa depan anak-anak
-                                kita.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section py-20 sm:py-28">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div class="reveal">
-                <h2 class="font-display text-3xl sm:text-4xl lg:text-4xl text-white mb-6">
-                    Building the Foundation of 2040
-                </h2>
-                <p class="text-white/80 text-lg mb-2 max-w-2xl mx-auto">
-                    JuniorBase is more than an educational tool, it is a movement. By joining our paid waiting list, you
-                    are securing a Founding Member Price Lock and priority access.
-                </p>
-                <p class="indo-text text-white/60 mb-10 max-w-2xl mx-auto">
-                    JuniorBase lebih dari sekadar alat pendidikan, ini adalah gerakan. Dengan bergabung di daftar tunggu
-                    berbayar, Anda mengamankan Kunci Harga Member Perdana dan akses prioritas.
-                </p>
-
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button
-                        class="bg-white text-purple-700 font-bold py-4 px-8 rounded-xl hover:bg-gray-100 transition-all hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-                        Join the Tier 1 Waiting List - 99k IDR
-                    </button>
-                    <a href="https://wa.me/6281234567890?text=Hello%20JuniorBase%2C%20I%20would%20like%20to%20know%20more%20about%20your%20program."
-                        class="border-2 border-white/30 text-white font-bold py-4 px-8 rounded-xl hover:bg-white/10 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-                        Learn More
+                    
+                    <a href="https://wa.me/6281234567890?text=Hello%20JuniorBase%2C%20I%20would%20like%20to%20join%20the%20waiting%20list." target="_blank" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium px-8 py-3.5 rounded-full transition-colors shadow-lg hover:shadow-xl">
+                        Secure Your Spot Now
                     </a>
                 </div>
+                
+                <div class="reveal" style="transition-delay: 0.2s;">
+                    <div class="bg-white rounded-3xl p-8 sm:p-10 border border-gray-100 shadow-xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-purple-600 text-white text-xs font-bold px-4 py-1 rounded-bl-xl uppercase tracking-wider">Most Popular</div>
+                        
+                        <h3 class="font-display text-2xl text-gray-900 mb-2">Tier 1 Waiting List</h3>
+                        <p class="text-gray-500 mb-6 pb-6 border-b border-gray-100">Limited to 200 founding families</p>
+                        
+                        <div class="mb-8">
+                            <span class="text-4xl font-bold text-gray-900">IDR 99.000</span>
+                            <span class="text-gray-500">/ deposit</span>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span class="text-gray-600">Priority Access to Program</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span class="text-gray-600">Founding Member Price Lock Guarantee</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span class="text-gray-600">Exclusive Welcome Kit for Your Child</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span class="text-gray-600">Fully Refundable if you change your mind</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-16">
+    <!-- Certification Section -->
+    <section class="py-20 sm:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <span class="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-6">Official Certification</span>
+            <h2 class="font-display text-3xl sm:text-4xl lg:text-4xl text-gray-900 mb-4">
+                Trusted & Verified
+            </h2>
+            <p class="indo-text text-xl mb-6 text-gray-600">
+                Teruji dan Terverifikasi
+            </p>
+            <p class="text-gray-500 text-lg max-w-2xl mx-auto mb-10">
+                Our proprietary cognitive behavioral engine and logic frameworks are officially certified and timestamped for authenticity.
+            </p>
+
+            <div class="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-gray-100 bg-gray-50 p-4">
+                <img src="img/srt.jfif" alt="Trusted Timestamp Authentication Certificate" class="w-full h-auto rounded-xl shadow-sm border border-gray-200" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <!-- Partner Section -->
+    <section class="py-16 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-10">
+                fathner By
+            </h3>
+
+            <div class="flex flex-wrap justify-center items-center gap-10 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                <!-- Partner Icons -->
+                <img src="img/logo-mayar.png" alt="Mayar" class="h-12 object-contain">
+                <!-- <img src="img/logo-mayar.png" alt="Mayar" class="h-12 object-contain">
+                <img src="img/logo-mayar.png" alt="Mayar" class="h-12 object-contain">
+                <img src="img/logo-mayar.png" alt="Mayar" class="h-12 object-contain"> -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8 border-t-4 border-purple-600">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-12 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Footer Brand -->
                 <div class="md:col-span-2">
-                    <div
-                        class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-purple-200 bg-clip-text text-transparent">
-                        JuniorBase
-                    </div>
-                    <p class="text-gray-400 mb-2 max-w-md">
-                        The world's first Logic Arena for children (9-15) to master critical thinking and ethical
-                        leadership in the age of AI.
+                    <h2 class="font-display text-2xl font-bold mb-4">JuniorBase</h2>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-sm mb-6">
+                        The world's first Logic Arena designed specifically for children aged 9-15. Shaping critical thinkers and ethical leaders for the AI era.
                     </p>
-                    <p class="text-gray-500 text-sm italic max-w-md">
-                        Logic Arena pertama di dunia untuk anak (9-15) untuk menguasai pemikiran kritis dan kepemimpinan
-                        etis di era AI.
-                    </p>
-                    <div class="flex gap-4 mt-6">
-                        <a href="#"
-                            class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-purple-600 transition-colors"
-                            aria-label="Twitter">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
-                                </path>
-                            </svg>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-purple-600 hover:text-white transition-colors">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
                         </a>
-                        <a href="#"
-                            class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-purple-600 transition-colors"
-                            aria-label="Instagram">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                            </svg>
-                        </a>
-                        <a href="#"
-                            class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-purple-600 transition-colors"
-                            aria-label="LinkedIn">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
-                                </path>
-                                <rect x="2" y="9" width="4" height="12"></rect>
-                                <circle cx="4" cy="4" r="2"></circle>
-                            </svg>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-purple-600 hover:text-white transition-colors">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                         </a>
                     </div>
                 </div>
-
+                
+                <!-- Quick Links -->
                 <div>
-                    <h4 class="font-bold mb-4">Product</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#method" class="hover:text-white transition-colors">Method</a></li>
-                        <li><a href="#pricing" class="hover:text-white transition-colors">Pricing</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">FAQ</a></li>
+                    <h3 class="font-semibold text-lg mb-4 text-gray-200">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" onclick="openModal('aboutModal')" class="text-gray-400 hover:text-white transition-colors text-sm">About Us</a></li>
+                        <li><a href="#method" class="text-gray-400 hover:text-white transition-colors text-sm">Our Method</a></li>
+                        <li><a href="#video" class="text-gray-400 hover:text-white transition-colors text-sm">How it works</a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-white transition-colors text-sm">Pricing</a></li>
                     </ul>
                 </div>
-
+                
+                <!-- Help & Legal -->
                 <div>
-                    <h4 class="font-bold mb-4">Company</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><span class="footer-link" onclick="openModal('aboutModal')">About</span></li>
-                        <li><span class="footer-link" onclick="openModal('contactModal')">Contact</span></li>
-                        <li><span class="footer-link" onclick="openModal('privacyModal')">Privacy Policy</span></li>
+                    <h3 class="font-semibold text-lg mb-4 text-gray-200">Help & Support</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" onclick="openModal('contactModal')" class="text-gray-400 hover:text-white transition-colors text-sm">Contact Us</a></li>
+                        <li><a href="#" onclick="openModal('privacyModal')" class="text-gray-400 hover:text-white transition-colors text-sm">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
-
-            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-                <p>© 2024 JuniorBase. All rights reserved.</p>
+            
+            <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">
+                    &copy; 2024 JuniorBase. All rights reserved.
+                </p>
+                <div class="text-gray-500 text-sm">
+                    Designed for the future of education.
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- Script to handle Modal Logic, Animations & Mobile Menu -->
     <script>
-        // Initialize variables first
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        // Modal functions
-        function openModal(modalId) {
-            const overlay = document.getElementById('modalOverlay');
-            const modal = document.getElementById(modalId);
-            if (overlay && modal) {
-                overlay.classList.add('active');
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
+        // Modal Handlers
+        function openModal(id) {
+            event.preventDefault(); // Mencegah page scroll ke atas jika dari link #
+            document.getElementById(id).style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // prevent scrolling behind modal
         }
 
-        function closeModal(modalId) {
-            const overlay = document.getElementById('modalOverlay');
-            const modal = document.getElementById(modalId);
-            if (overlay && modal) {
-                overlay.classList.remove('active');
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto'; // re-enable scrolling
         }
 
-        // Close modal on overlay click
-        const modalOverlay = document.getElementById('modalOverlay');
-        if (modalOverlay) {
-            modalOverlay.addEventListener('click', function () {
-                document.querySelectorAll('.modal-content.active').forEach(function (modal) {
-                    modal.classList.remove('active');
-                });
-                this.classList.remove('active');
-                document.body.style.overflow = '';
+        // Close when clicking the overlay
+        document.getElementById('modalOverlay').addEventListener('click', function() {
+            var modals = document.querySelectorAll('.modal-content');
+            modals.forEach(function(modal) {
+                modal.style.display = 'none';
             });
-        }
-
-        // Close modal on Escape key
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                const overlay = document.getElementById('modalOverlay');
-                if (overlay && overlay.classList.contains('active')) {
-                    document.querySelectorAll('.modal-content.active').forEach(function (modal) {
-                        modal.classList.remove('active');
-                    });
-                    overlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            }
+            this.style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
 
-        // Intersection Observer for scroll animations
-        const observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible', 'active');
-                }
-            });
-        }, observerOptions);
+        // Mobile Menu Toggle Logic
+        const menuToggleButton = document.getElementById('menuToggleButton');
+        const mobileMenu = document.getElementById('mobileMenu');
 
-        // Observe all animated elements
-        document.querySelectorAll('.animate-on-scroll, .reveal, .stagger-child').forEach(function (el) {
-            observer.observe(el);
+        menuToggleButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
 
-        // Hero slider functionality
-        const sliderDots = document.querySelectorAll('.slider-dot');
-        const heroImage = document.querySelector('.hero-image-frame img');
-
-        // Injecting PHP array into JS
-        const heroImages = [
-            "img/10.jpg",
-            "img/11.png",
-            "img/03.png"
-        ];
-
-        let currentSlide = 0;
-
-        sliderDots.forEach(function (dot, index) {
-            dot.addEventListener('click', function () {
-                currentSlide = index;
-                updateSlider();
+        // Auto-close mobile menu on clicking a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
             });
         });
 
-        function updateSlider() {
-            sliderDots.forEach(function (d) {
-                d.classList.remove('active');
-            });
-            if (sliderDots[currentSlide]) {
-                sliderDots[currentSlide].classList.add('active');
-            }
-            if (heroImage) {
-                heroImage.style.opacity = '0';
-                setTimeout(function () {
-                    heroImage.src = heroImages[currentSlide];
-                    heroImage.style.opacity = '1';
-                }, 200);
-            }
-        }
+        // Intersection Observer (UNTUK MENGHILANGKAN BLANK KARENA ANIMASI)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Pengaturan pendeteksi kapan elemen terlihat di layar
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 // Animasi mulai saat elemen terlihat 15% di layar
+            };
 
-        // Auto-slide every 5 seconds
-        setInterval(function () {
-            currentSlide = (currentSlide + 1) % heroImages.length;
-            updateSlider();
-        }, 5000);
-
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href && href !== '#') {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active'); // Memicu transisi opacity 1
+                        observer.unobserve(entry.target);     // Hanya berjalan sekali
                     }
-                }
+                });
+            }, observerOptions);
+
+            // Menerapkan observer pada semua elemen yang memiliki class animasi
+            const elementsToAnimate = document.querySelectorAll('.reveal, .animate-on-scroll');
+            elementsToAnimate.forEach((el) => {
+                observer.observe(el);
             });
         });
-
-        // Navbar background on scroll
-        const nav = document.querySelector('nav');
-        window.addEventListener('scroll', function () {
-            if (nav) {
-                if (window.scrollY > 100) {
-                    nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
-                } else {
-                    nav.style.boxShadow = 'none';
-                }
-            }
-        });
-
-        // Mobile menu toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu');
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', function () {
-                alert('Mobile menu would open here');
-            });
-        }
-
-        // Respect reduced motion preference
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            document.querySelectorAll('.animate-on-scroll, .reveal, .stagger-child').forEach(function (el) {
-                el.style.opacity = '1';
-                el.style.transform = 'none';
-                el.style.animation = 'none';
-            });
-        }
     </script>
 </body>
-
 </html>
